@@ -17,17 +17,19 @@ public class DriverMapper
 
     public static DriverDTO makeDriverDTO(DriverDO driverDO)
     {
+
         DriverDTO.DriverDTOBuilder driverDTOBuilder = DriverDTO.newBuilder()
             .setId(driverDO.getId())
             .setPassword(driverDO.getPassword())
             .setUsername(driverDO.getUsername());
-
         GeoCoordinate coordinate = driverDO.getCoordinate();
         if (coordinate != null)
         {
             driverDTOBuilder.setCoordinate(coordinate);
         }
-
+        if(driverDO.getCarDO() != null){
+            driverDTOBuilder.setCar(CarMapper.makeCarDTO(driverDO.getCarDO()));
+        }
         return driverDTOBuilder.createDriverDTO();
     }
 

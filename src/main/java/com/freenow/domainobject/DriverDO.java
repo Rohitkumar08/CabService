@@ -3,13 +3,17 @@ package com.freenow.domainobject;
 import com.freenow.domainvalue.GeoCoordinate;
 import com.freenow.domainvalue.OnlineStatus;
 import java.time.ZonedDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -24,7 +28,7 @@ public class DriverDO
 {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -53,11 +57,14 @@ public class DriverDO
     @Column(nullable = false)
     private OnlineStatus onlineStatus;
 
+    @OneToOne(targetEntity=CarDO.class)
+    @JoinColumn(name="CAR_ID")
+    private CarDO car;
+
 
     private DriverDO()
     {
     }
-
 
     public DriverDO(String username, String password)
     {
@@ -128,6 +135,14 @@ public class DriverDO
     {
         this.coordinate = coordinate;
         this.dateCoordinateUpdated = ZonedDateTime.now();
+    }
+
+    public CarDO getCarDO() {
+        return car;
+    }
+
+    public void setCarDO(CarDO car) {
+        this.car= car;
     }
 
 }
